@@ -41,6 +41,51 @@ public:
             delete temp;
         }
     }
+    // Конструктор копирования
+    Stack(const Stack& other) {
+        top = nullptr;
+        size = 0;
+        Node* temp = other.top;
+        while (temp != nullptr) {
+            push(temp->data);
+            temp = temp->next;
+        }
+    }
+
+    // Оператор присваивания
+    Stack& operator=(const Stack& other) {
+        if (this != &other) {
+            while (top != nullptr) {
+                pop();
+            }
+            Node* temp = other.top;
+            while (temp != nullptr) {
+                push(temp->data);
+                temp = temp->next;
+            }
+        }
+        return *this;
+    }
+
+    // Конструктор перемещения
+    Stack(Stack&& other) noexcept : top(other.top), size(other.size) {
+        other.top = nullptr;
+        other.size = 0;
+    }
+
+    // Оператор присваивания перемещением
+    Stack& operator=(Stack&& other) noexcept {
+        if (this != &other) {
+            delete top;
+
+            top = other.top;
+            size = other.size;
+
+            other.top = nullptr;
+            other.size = 0;
+        }
+        return *this;
+    }
 
     void push(int value) {
         Node* newNode = new Node();
